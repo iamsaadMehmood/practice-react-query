@@ -15,6 +15,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
+import { observer } from 'mobx-react';
 
 onlineManager.setEventListener(setOnline => {
   return NetInfo.addEventListener(state => {

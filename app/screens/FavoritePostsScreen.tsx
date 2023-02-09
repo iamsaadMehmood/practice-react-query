@@ -1,42 +1,29 @@
 import {observer} from 'mobx-react';
 import React from 'react';
-import {
-  FlatList,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import StarIcon from '../assets/svgs/StarIcon';
-import AppLoader from '../components/AppLoader';
-import usePosts from '../services/api.service';
-import {navigate} from '../services/naviagtion.service';
+import {FlatList, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import store from '../store/store';
 import {Colors} from '../utils/colors';
+import {navigate} from '../services/naviagtion.service';
 
-const HomeScreen = () => {
-  const {data, isLoading, isSuccess, isError} = usePosts();
+const FavoritePostsScreen = () => {
   return (
     <SafeAreaView>
       <View style={styles.headerView}>
-        <Text style={styles.header}>All posts</Text>
-        <Text style={styles.header} onPress={() => navigate('Favorite')}>
-          Favorites
+        <Text style={styles.header}> Favorites</Text>
+        <Text style={styles.header} onPress={() => navigate('Home')}>
+          All posts
         </Text>
       </View>
-      <View style={{height: '90%', marginHorizontal: 20}}>
+      <View
+        style={{
+          height: '90%',
+        }}>
         <FlatList
-          data={data}
+          data={store.Posts}
           style={styles.wrapper}
           keyExtractor={item => `${item.id}`}
           renderItem={({item}) => (
             <View style={styles.post}>
-              <View style={styles.addFav}>
-                <TouchableOpacity onPress={() => store.addPost(item)}>
-                  <StarIcon height={30} width={30} />
-                </TouchableOpacity>
-              </View>
               <Text style={styles.postTitle}>{item.title}</Text>
             </View>
           )}
@@ -47,12 +34,10 @@ const HomeScreen = () => {
           }
         />
       </View>
-      {isLoading && <AppLoader />}
     </SafeAreaView>
   );
 };
-export default observer(HomeScreen);
-
+export default observer(FavoritePostsScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -86,11 +71,6 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     marginBottom: 20,
-  },
-  addFav: {
-    marginVertical: 5,
-    alignItems: 'flex-end',
-    // width: '100%',
   },
   postTitle: {color: Colors.primary, textTransform: 'capitalize'},
 });

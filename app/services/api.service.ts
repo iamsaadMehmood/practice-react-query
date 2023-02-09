@@ -1,12 +1,6 @@
 import {useQuery} from '@tanstack/react-query';
 import axios from 'axios';
-
-interface IPost {
-  userId: number;
-  id: number;
-  title: string;
-  body: string;
-}
+import {IPost} from '../models/IPost';
 
 const fetchPosts = async () => {
   const {data} = await axios.get<IPost[]>(
