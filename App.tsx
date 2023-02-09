@@ -5,13 +5,31 @@
  * @format
  */
 
+import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import MainNavigation from './app/navigation/MainNaviagtion';
+import {navigationRef} from './app/services/naviagtion.service';
+import NetInfo from '@react-native-community/netinfo';
+import {
+  onlineManager,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
 
+onlineManager.setEventListener(setOnline => {
+  return NetInfo.addEventListener(state => {
+    setOnline(!!state.isConnected);
+  });
+});
 const App = () => {
-  return <SafeAreaView></SafeAreaView>;
+  const queryClient = new QueryClient();
+  return (
+    <NavigationContainer ref={navigationRef}>
+      <QueryClientProvider client={queryClient}>
+        <MainNavigation />
+      </QueryClientProvider>
+    </NavigationContainer>
+  );
 };
-
-const styles = StyleSheet.create({});
 
 export default App;
