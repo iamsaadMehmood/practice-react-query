@@ -1,21 +1,15 @@
-import {action, observable} from 'mobx';
+import {makeAutoObservable} from 'mobx';
 import {IPost} from '../models/IPost';
 
 class Store {
-  @observable
   Posts: IPost[] = [];
 
-  //   @computed
-  //   get delayMessage = () => {
-  //     return 'The train is delayed by' + this.count;
-  //   };
-
-  @action
+  constructor() {
+    makeAutoObservable(this);
+  }
   addPost = (post: IPost) => {
-    console.log(post)
     this.Posts.push(post);
   };
-  @action
   removeSpecificPost = (post: IPost) => {
     const index = this.Posts.findIndex(item => item.id === post.id);
     this.Posts.splice(index, 1);
